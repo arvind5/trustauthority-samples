@@ -1,8 +1,7 @@
 #!/bin/bash
 
 function checkIfRequireToolInstalled() {
-    cmdd=$1
-    loc="$(type -p "$cmdd")"
+    loc="$(type -p "$1")"
     if ! [ -f "$loc" ]; then
         return 1
     fi
@@ -37,8 +36,7 @@ function makeHttpsCall(){
 
 #Prerequisite check for curl, jq
 checkIfRequireToolInstalled "curl"
-res=$?
-if [ $res == 1 ]; then
+if [ $? == 1 ]; then
     echo -e "\u274c  curl is not installed, exiting... Please install curl and rerun script" 
     exit 1   
 else 
@@ -46,8 +44,7 @@ else
 fi
 
 checkIfRequireToolInstalled "jq"
-res=$?
-if [ $res == 1 ]; then
+if [ $? == 1 ]; then
     echo -e "\u274c  jq is not installed, exiting... Please install jq and rerun script"    
     exit 1
 else 
@@ -59,7 +56,7 @@ label_url="Url"
 label_method="Method"
 label_response="Response"
 label_request="Request"
-label_expected_code="Excpected Code"
+label_expected_code="Expected Code"
 label_received_code="Received Code"
 
 #Required server address
@@ -78,7 +75,7 @@ return_code=''
 url=$server_addr/taa/v1/token
 
 printf "\n\n"
-printf "\033[1;34m Get attestation token \033[00m\n\n"
+printf "\033[1;34m Get attestation token: \033[00mAttesting workload with Intel Trust Authority.\n\n"
 sleep 5
 printf "%*s %s\n" ${#label_expected_code} "$label_url" "| $url"
 printf "%*s %s\n" ${#label_expected_code} "$label_method" "| GET"
@@ -100,7 +97,7 @@ requestForKey=$( jq -n \
                   --arg kturl "$kbs_host/kbs/v1/keys/$key_id/transfer" \
                   '{attestation_token: $at, key_transfer_url: $kturl}' )
 url=$server_addr/taa/v1/key
-printf "\n\033[1;34m Get decryption key \033[00m\n\n"
+printf "\n\033[1;34m Get decryption key: \033[00mRequesting encryption key from KBS.\n\n"
 sleep 5
 printf "%*s %s\n" ${#label_expected_code} "$label_url" "| $url"
 printf "%*s %s\n" ${#label_expected_code} "$label_method" "| POST"
@@ -119,7 +116,7 @@ printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 
 #make decrypt call
 url=$server_addr/taa/v1/decrypt
-printf "\n\033[1;34m Decrypt model \033[00m\n\n"
+printf "\n\033[1;34m Decrypt model: \033[00mDecrypting Model using encryption key from KBS.\n\n"
 sleep 5
 printf "%*s %s\n" ${#label_expected_code} "$label_url" "| $url"
 printf "%*s %s\n" ${#label_expected_code} "$label_method" "| POST"
@@ -147,7 +144,7 @@ requestForExecute='{
     "age": "37"
 }'
 url=$server_addr/taa/v1/execute
-printf "\n\033[1;34m Execute model \033[00m\n\n"
+printf "\n\033[1;34m Execute model: \033[00mExecuting model with test data.\n\n"
 sleep 5
 printf "%*s %s\n" ${#label_expected_code} "$label_url" "| $url"
 printf "%*s %s\n" ${#label_expected_code} "$label_method" "| POST"
@@ -166,7 +163,7 @@ printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 
 #reset model
 url=$server_addr/taa/v1/reset
-printf "\n\033[1;34m Reset Model \033[00m\n\n"
+printf "\n\033[1;34m Reset Model: \033[00mClearing decrypted model from memory.\n\n"
 sleep 5
 printf "%*s %s\n" ${#label_expected_code} "$label_url" "| $url"
 printf "%*s %s\n" ${#label_expected_code} "$label_method" "| POST"
