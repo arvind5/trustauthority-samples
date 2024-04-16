@@ -108,7 +108,7 @@ SKIP_TLS_VERIFICATION if set to **true** will skip the TLS server certificate ve
    ```bash
    sudo docker run --name ita-demo -d --env-file workload.env --device=/dev/tdx_guest -p 12780:12780 --user 0 trustauthority-demo:latest
    ```
-   On successful run, the container will generate `execute_workload_flow.env` file under /tmp/ folder. This env file will be used later for executing workload flow. Please update the env variables in execute_workload_flow.env file if you used custom settings.
+   On successful run, the container will generate a `execute_workload_flow.env` file in the `/tmp/` folder. This env file will be used later for executing the workload flow script. Update the env variables in the `execute_workload_flow.env` file if you used custom settings.
 
 > [!NOTE]
 > If running on Azure, replace `--device=/dev/tdx_guest` with `--device=/dev/tpmrm0`  
