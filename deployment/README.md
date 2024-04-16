@@ -92,7 +92,7 @@ This section describes how to build and deploy the demonstration workload. The w
    The `KBS_ADMIN` and `KBS_PASSWORD` must match the `ADMIN_USERNAME` and `ADMIN_PASSWORD` used in KBS.env.
 
    The `KBS_URL` is of the form `https://<IP_address>:9443/kbs/v1`, where IP_address is the IP address of the host machine where the relying-party (KBS) container is running. If the KBS is running on same TDVM as the workload, then provide `172.17.0.1` as IP_address. Port 9443 is the default listening port for Intel KBS. If you change the port number for the Intel KBS container, you'll need to make a corresponding change to `KBS_URL`.
-
+SKIP_TLS_VERIFICATION if set to **true** will skip the TLS server certificate verification. For this demo, set it to **true** since we are using self-signed certificates for TLS.
    `TRUSTAUTHORITY_API_KEY` is the same as used in **kbs.env**.
 
    ```
