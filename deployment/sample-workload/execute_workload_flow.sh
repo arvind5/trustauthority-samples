@@ -1,10 +1,9 @@
 #!/bin/bash
 # Copyright (C) 2024 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
-# Script is used for executing workload flow
 
 # Script is used for executing workload flow
-# runing scripts
+# Runing script:
 # execute_workload_flow.sh <optional_env_file>
 # optional_env_file: Optional environment file path. Default is /tmp/execute_workload_flow.env
 
@@ -81,6 +80,8 @@ function validateEnvironmentFile(){
         envFileName=$1    
     fi
     printf "Using $envFileName environment file\n"
+    
+    #check if environment file exists
     checkIfFileExists $envFileName
     if [ $? == 1 ]; then
         echo -e "\u274c  Environment file ($envFileName) does not exist, exiting... Please create env file and rerun script"
@@ -88,7 +89,6 @@ function validateEnvironmentFile(){
     fi
     export $(grep -v '^#' $envFileName | xargs -d '\n')
     
-    #check if environment file exists
     hasError=false
     if [[ -z "$WORKLOAD_URL" ]];then
         printf "${CODE_ERROR}%s${CODE_NC}" "WORKLOAD_URL must be present"
@@ -103,7 +103,6 @@ function validateEnvironmentFile(){
         hasError=true
     fi  
     if [[ $hasError == true ]];then
-        printf "For environment variable refer "'\e]8;;%s\e\\%s\e]8;;\e\\\n' "${HELP_LINK}" "${HELP_LINK}"
         printf "${CODE_ERROR} %s ${CODE_NC}" "Exiting..."
         return 1
     fi  
