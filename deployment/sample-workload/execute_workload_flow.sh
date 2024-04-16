@@ -30,8 +30,6 @@ readonly LABEL_EXE_MODEL_DESC="Executing model with test data."
 readonly LABEL_RST_MODEL="Reset Model"
 readonly LABEL_RST_MODEL_DESC="Clearing decrypted model from memory."
 
-#link
-readonly HELP_LINK="https://github.com/arvind5/trustauthority-samples/blob/main/tdx-ml-workload/README.md"
 ##############################################################################################
 function checkIfRequireToolInstalled() {
     loc="$(type -p "$1")"

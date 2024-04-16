@@ -19,7 +19,7 @@ This section describes how to build and deploy the Intel KBS relying party conta
 ### Build
 1. Download the [Dockerfile](./kbs/Dockerfile) for building the container.
    ```bash
-   wget https://raw.githubusercontent.com/arvind5/trustauthority-samples/task/dockerfile-deployment/deployment/kbs/Dockerfile
+   wget https://raw.githubusercontent.com/intel/trustauthority-samples/main/deployment/kbs/Dockerfile
    ```
 2. Run the following command to build the Docker image for Intel KBS.
    ```bash
@@ -29,7 +29,7 @@ This section describes how to build and deploy the Intel KBS relying party conta
 ### Deploy
 1. Download the [kbs.env](./kbs/kbs.env) file and update the missing configurations.
    ```bash
-   wget https://raw.githubusercontent.com/arvind5/trustauthority-samples/task/dockerfile-deployment/deployment/kbs/kbs.env
+   wget https://raw.githubusercontent.com/intel/trustauthority-samples/main/deployment/kbs/kbs.env
    ```
 
    When the relying-party container is run, a startup script configures Intel KBS to use the `ADMIN_USERNAME` and `ADMIN_PASSWORD` provided in the **kbs.env** file. You'll also need to provide an attestation API key for `TRUSTAUTHORITY_API_KEY`, which you can get from the Intel Trust Authority [portal](https://portal.trustauthority.intel.com). You might also need to configure an HTTPS proxy, depending on your network configuration. In the following sample kbs.env file, you should replace the parameters marked with angle brackets, for example `<admin-username>`.
@@ -68,7 +68,7 @@ This section describes how to build and deploy the demonstration workload. The w
 ### Build
 1. Download the [Dockerfile](./sample-workload/Dockerfile) for building the Intel TDX demo workload.
    ```bash
-   wget https://raw.githubusercontent.com/arvind5/trustauthority-samples/task/dockerfile-deployment/deployment/sample-workload/Dockerfile
+   wget https://raw.githubusercontent.com/intel/trustauthority-samples/main/deployment/sample-workload/Dockerfile
    ```
 2. Run the following command to build the Docker image for the TDX demo workload.
    ```bash
@@ -85,14 +85,16 @@ This section describes how to build and deploy the demonstration workload. The w
 ### Deploy
 1. Download the [workload.env](./sample-workload/workload.env) file and update the missing configurations.
    ```bash
-   wget https://raw.githubusercontent.com/arvind5/trustauthority-samples/task/dockerfile-deployment/deployment/sample-workload/workload.env
+   wget https://raw.githubusercontent.com/intel/trustauthority-samples/main/deployment/sample-workload/workload.env
    ```
    The **workload.env** file contains the settings needed for the sample workload to communicate with Intel KBS and Intel Trust Authority. This file contains secrets. Embedding secrets in an unencrypted file is _not_ a recommended best practice for secure systems. It's done here to make the demo easy to configure.
 
    The `KBS_ADMIN` and `KBS_PASSWORD` must match the `ADMIN_USERNAME` and `ADMIN_PASSWORD` used in KBS.env.
 
    The `KBS_URL` is of the form `https://<IP_address>:9443/kbs/v1`, where IP_address is the IP address of the host machine where the relying-party (KBS) container is running. If the KBS is running on same TDVM as the workload, then provide `172.17.0.1` as IP_address. Port 9443 is the default listening port for Intel KBS. If you change the port number for the Intel KBS container, you'll need to make a corresponding change to `KBS_URL`.
-SKIP_TLS_VERIFICATION if set to **true** will skip the TLS server certificate verification. For this demo, set it to **true** since we are using self-signed certificates for TLS.
+
+   `SKIP_TLS_VERIFICATION` if set to **true** will skip the TLS server certificate verification. For this demo, set it to **true** since we are using self-signed TLS certificates for KBS.
+
    `TRUSTAUTHORITY_API_KEY` is the same as used in **kbs.env**.
 
    ```
@@ -125,7 +127,7 @@ SKIP_TLS_VERIFICATION if set to **true** will skip the TLS server certificate ve
 ### Execute Workload Flow
 1. Download the [execute_workload_flow.sh](./sample-workload/execute_workload_flow.sh) script for executing secure key release workflow.
    ```bash
-   wget https://raw.githubusercontent.com/arvind5/trustauthority-samples/task/dockerfile-deployment/deployment/sample-workload/execute_workload_flow.sh
+   wget https://raw.githubusercontent.com/intel/trustauthority-samples/main/deployment/sample-workload/execute_workload_flow.sh
    ```
 2. Run the following command to execute the workload flow script.
    ```bash
