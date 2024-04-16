@@ -5,9 +5,9 @@ These instructions describe how to build and deploy the two Docker containers co
 There are four components required to build the demo app:
 
 - Dockerfile to build the Intel® Key Broker Service (Intel KBS) relying party container.
-- **KBS.env** environment file to configure Intel KBS. You must modify this file to suit your environment. 
+- **kbs.env** environment file to configure Intel KBS. You must modify this file to suit your environment. 
 - Dockerfile to build the Intel TDX workload container. The Intel TDX workload build process supports Intel SGX DCAP, Azure confidential VMs with Intel TDX, and Google Cloud Platform (GCP) Confidential VMs.
-- **workload.env** to supply the workload with Intel KBS and Intel Trust Authority connection info. 
+- **workload.env** environment file to supply the workload with Intel KBS and Intel Trust Authority connection info. 
 
 ## Prerequisites
 - [Docker engine >= 20.10](https://docs.docker.com/engine/install/)
@@ -32,7 +32,7 @@ This section describes how to build and deploy the Intel KBS relying party conta
    wget https://raw.githubusercontent.com/arvind5/trustauthority-samples/task/dockerfile-deployment/deployment/kbs/kbs.env
    ```
 
-   When the relying-party container is run, a startup script configures Intel KBS to use the `ADMIN_USERNAME` and `ADMIN_PASSWORD` provided in the **kbs.env** file. You'll also need to provide an attestation API key for `TRUSTAUTHORITY_API_KEY`, which you can get from the Intel Trust Authority [portal][https://portal.trustauthority.intel.com]. You might also need to configure an HTTPS proxy, depending on your network configuration. In the following sample kbs.env file, you should replace the parameters marked with angle brackets, for example "<admin-username>".
+   When the relying-party container is run, a startup script configures Intel KBS to use the `ADMIN_USERNAME` and `ADMIN_PASSWORD` provided in the **kbs.env** file. You'll also need to provide an attestation API key for `TRUSTAUTHORITY_API_KEY`, which you can get from the Intel Trust Authority [portal](https://portal.trustauthority.intel.com). You might also need to configure an HTTPS proxy, depending on your network configuration. In the following sample kbs.env file, you should replace the parameters marked with angle brackets, for example `<admin-username>`.
 
    ```
    LOG_LEVEL=INFO
@@ -108,7 +108,7 @@ This section describes how to build and deploy the demonstration workload. The w
    ```bash
    sudo docker run --name ita-demo -d --env-file workload.env --device=/dev/tdx_guest -p 12780:12780 --user 0 trustauthority-demo:latest
    ```
-   On successful run, the container will generate a key on KBS, `key_id` of which could be fetched from container logs. Make note of `key_id` from container logs to be used later for executing workload flow.
+   On successful run, the container will generate `execute_workload_flow.env` file under /tmp/ folder. This env file will be used later for executing workload flow. Please update the env variables in execute_workload_flow.env file if you used custom settings.
 
 > [!NOTE]
 > If running on Azure, replace `--device=/dev/tdx_guest` with `--device=/dev/tpmrm0`  
@@ -122,8 +122,8 @@ This section describes how to build and deploy the demonstration workload. The w
 > crw-rw---- 1 root <user-group> 10, 123 /dev/tdx_guest
 > ```
 
-### Execute Flow
-1. Download the [execute_workload_flow.sh](./sample-workload/execute_workload_flow.sh) file for executing secure key release workflow.
+### Execute Workload Flow
+1. Download the [execute_workload_flow.sh](./sample-workload/execute_workload_flow.sh) script for executing secure key release workflow.
    ```bash
    wget https://raw.githubusercontent.com/arvind5/trustauthority-samples/task/dockerfile-deployment/deployment/sample-workload/execute_workload_flow.sh
    ```
@@ -131,4 +131,3 @@ This section describes how to build and deploy the demonstration workload. The w
    ```bash
    bash execute_workload_flow.sh
    ```
-   The script requires TDX demo workload URL, KBS URL and key_id to execute the secure key release workflow.
